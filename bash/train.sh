@@ -3,6 +3,7 @@
 
 set -e
 
+PYTHONEXEC='/home/dale016c/.conda/envs/dnabert/bin/python'
 CONFIG_FILE=''
 EXPERIMENT_DIR=''
 NODES=1
@@ -57,7 +58,7 @@ echo "export SETQUENCE_LOG_WANDB_FREQ=100" >> .train_jobscript_$UIDjob.sh
 echo "export SETQUENCE_LOG_WANDB_RUNNAME=$jobname" >> .train_jobscript_$UIDjob.sh
 echo "export WANDB_DIR=$EXPERIMENT_DIR" >> .train_jobscript_$UIDjob.sh
 echo "export SLURM_MASTER_PORT=$PORT" >> .train_jobscript_$UIDjob.sh
-echo "time srun /home/dale016c/.conda/envs/dnabert/bin/python -u train.py -c $CONFIG_FILE -e $EXPERIMENT_DIR" >> .train_jobscript_$UIDjob.sh
+echo "srun $PYTHONEXEC -m setquence -c $CONFIG_FILE -e $EXPERIMENT_DIR" >> .train_jobscript_$UIDjob.sh
 
 sbatch .train_jobscript_$UIDjob.sh
 rm .train_jobscript_$UIDjob.sh
