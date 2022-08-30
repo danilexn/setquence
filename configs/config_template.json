@@ -1,0 +1,105 @@
+{
+    "trace": {
+        "enabled": false,
+        "type": "scorep",
+        "n_steps": 20
+    },
+    "data": {
+        "dataloader": "SetQuenceDataset",
+        "train": {
+            "synthetic": false,
+            "head": -1,
+            "route": "data/dual/train.torch",
+            "batch_size": 1,
+            "shuffle": false,
+            "kmer_file": null
+        },
+        "test": {
+            "synthetic": false,
+            "head": -1,
+            "route": "data/dual/dev.torch",
+            "batch_size": 1,
+            "shuffle": false,
+            "kmer_file": null
+        }
+    },
+    "training": {
+        "enabled": true,
+        "config": {
+            "epochs": 1,
+            "steps": -1,
+            "max_grad_norm": -1,
+            "amp": false,
+            "grad_acc_steps": 1,
+            "loss_factor": 1
+        },
+        "optimizer": {
+            "name": "adam",
+            "distributed": false,
+            "config": {
+                "lr": 0.000025,
+                "betas": [
+                    0.9,
+                    0.999
+                ],
+                "eps": 1e-08,
+                "weight_decay": 0,
+                "amsgrad": true
+            }
+        }
+    },
+    "testing": {
+        "enabled": true,
+        "evaluator": "classification"
+    },
+    "model": {
+        "name": "setquence_dual",
+        "distribution": "DistributedDataParallel",
+        "distributer": "setquence_dual_distributed",
+        "finetune": false,
+        "pretrained_route": null,
+        "config": {
+            "encoder": {
+                "seq_len": 64,
+                "max_seq": 400,
+                "seq_split": 400,
+                "hidden_size": 768,
+                "embedding_size": 768,
+                "bert": true,
+                "bert_config": "configs/config_bert.json",
+                "bert_pretrained": true,
+                "bert_route": "/home/dale016c/PerformanceAnalysis/DNABERT_6",
+                "temperature": 3,
+                "alpha": 0.1,
+                "teacher_bert_config": "/home/dale016c/PerformanceAnalysis/DNABERT_6/config.json",
+                "teacher_bert_route": "/home/dale016c/PerformanceAnalysis/DNABERT_6"
+            },
+            "pooler": {
+                "p_dropout": 0.3,
+                "n_heads": 12,
+                "k_seeds": 1,
+                "hidden_size": 768,
+                "n_layers": 1,
+                "pairing_method": "sum,diff,or"
+            },
+            "decoder": {
+                "n_classes": 33,
+                "p_dropout": 0.3,
+                "hidden_size": 768,
+                "loss": {
+                    "module": "crossentropyloss",
+                    "weighted": false
+                },
+                "noisy_gating": true,
+                "num_experts": 10,
+                "k": 4,
+                "n_blocks": 2
+            },
+            "reconstructor": {
+                "dim_out": 768,
+                "p_dropout": 0.3,
+                "hidden_size": 768
+            }
+        }
+    }
+}
