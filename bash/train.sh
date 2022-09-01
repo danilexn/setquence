@@ -12,10 +12,10 @@ PROJECT=''
 PORT=12345
 
 print_usage() {
-  printf "Usage: train.sh -c [route to .config file] -e [route to experiment dir] -g [number of GPUS per node] -n [number of nodes] -a [project or account name] -p [port]"
+  printf "Usage: train.sh -c [route to .config file] -e [route to experiment dir] -g [number of GPUS per node] -n [number of nodes] -a [project or account name] -p [port] -s [python executable location]"
 }
 
-while getopts 'c:e:g:n:a:p:' flag; do
+while getopts 'c:e:g:n:a:p:s:' flag; do
   case "${flag}" in
     c) CONFIG_FILE="${OPTARG}" ;;
     e) EXPERIMENT_DIR="${OPTARG}" ;;
@@ -23,6 +23,7 @@ while getopts 'c:e:g:n:a:p:' flag; do
     n) NODES="${OPTARG}" ;;
     a) PROJECT="${OPTARG}" ;;
     p) PORT="${OPTARG}" ;;
+    s) PYTHONEXEC="${OPTARG}" ;;
     *) print_usage
        exit 1 ;;
   esac
@@ -51,12 +52,6 @@ echo "#SBATCH -e slurm-logs/$jobname-%j.err" >> .train_jobscript_$UIDjob.sh
 echo "#SBATCH -o slurm-logs/$jobname-%j.out" >> .train_jobscript_$UIDjob.sh
 
 echo "module load modenv/hiera" >> .train_jobscript_$UIDjob.sh
-echo "export SETQUENCE_LOG_WANDB=1" >> .train_jobscript_$UIDjob.sh
-echo "export SETQUENCE_LOG_WANDB_PROJECT='setquence'" >> .train_jobscript_$UIDjob.sh
-echo "export SETQUENCE_LOG_WANDB_ENTITY='setquence'" >> .train_jobscript_$UIDjob.sh
-echo "export SETQUENCE_LOG_WANDB_FREQ=100" >> .train_jobscript_$UIDjob.sh
-echo "export SETQUENCE_LOG_WANDB_RUNNAME=$jobname" >> .train_jobscript_$UIDjob.sh
-echo "export WANDB_DIR=$EXPERIMENT_DIR" >> .train_jobscript_$UIDjob.sh
 echo "export SLURM_MASTER_PORT=$PORT" >> .train_jobscript_$UIDjob.sh
 echo "srun $PYTHONEXEC -m setquence -c $CONFIG_FILE -e $EXPERIMENT_DIR" >> .train_jobscript_$UIDjob.sh
 
