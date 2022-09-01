@@ -1,0 +1,83 @@
+{
+    "data": {
+        "dataloader": "SetQuenceDataset",
+        "train": {
+            "route": "train.h5",
+            "batch_size": 1,
+            "shuffle": true,
+            "max_seq": 20000,
+            "seq_len": 72,
+            "load_balance": true,
+            "p_dropout": 0.1
+        },
+        "test": {
+            "route": "test.h5",
+            "batch_size": 1,
+            "shuffle": false,
+            "max_seq": 20000,
+            "seq_len": 72,
+            "load_balance": false
+        }
+    },
+    "training": {
+        "enabled": true,
+        "config": {
+            "epochs": 10
+        },
+        "optimizer": {
+            "name": "adam_multitensor",
+            "distributed": false,
+            "config": {
+                "lr": 0.00001,
+                "betas": [
+                    0.9,
+                    0.999
+                ],
+                "eps": 1e-08,
+                "weight_decay": 0,
+                "amsgrad": false
+            }
+        }
+    },
+    "testing": {
+        "enabled": true,
+        "evaluator": "classification"
+    },
+    "model": {
+        "name": "setquence_dual_large",
+        "distribution": "DistributedDataParallel",
+        "distributer": "setquence_dual_distributed",
+        "config": {
+            "encoder": {
+                "seq_len": 72,
+                "max_seq": 8000,
+                "seq_split": 20000,
+                "hidden_size": 768,
+                "embedding_size": 768,
+                "bert": true,
+                "bert_config": "config.json",
+                "bert_pretrained": false,
+                "bert_route": "",
+                "max_gradient": 256,
+                "lr_times": 1.0,
+                "p_dropout": 0
+            },
+            "pooler": {
+                "p_dropout": 0.1,
+                "n_heads": 12,
+                "k_seeds": 1,
+                "hidden_size": 768
+            },
+            "decoder": {
+                "n_classes": 10,
+                "p_dropout": 0.3,
+                "hidden_size": 768,
+                "loss": {
+                    "module": "crossentropyloss",
+                    "weighted": true
+                },
+                "lr_times": 1.0
+            }
+        }
+    }
+}
