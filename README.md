@@ -41,7 +41,7 @@ python3 -m pip install .
 
 ## 2. Supervised training of SetQuence models
 ### 2.1 Training dataset
-To train a SetQuence model, you need a dataset in any of the [supported formats](). You may find an example dataset (patient mutomes from TCGA pan-cancer for tumor type classification) in [this link]().
+To train a SetQuence model, you need a dataset in any of the [supported formats](). You may find an example dataset (patient mutomes from TCGA pan-cancer for tumor type classification) in [this link](https://drive.google.com/drive/folders/112uxBhJ2XHxruYcVkxhm5qTizyUaME6y).
 
 ### 2.2 Configuring the model
 Then, you need to create a **json** file containing the configuration for the model. You can find a template in [configs/config_template.json](https://github.com/danilexn/setquence/blob/main/configs/config_template.json). 
