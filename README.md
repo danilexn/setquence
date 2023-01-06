@@ -5,7 +5,7 @@
 This repository contains code used for the Master thesis "Scalable Deep Set Representations for Genomics Optimizing and Applying SETQUENCE to Large-Scale Cancer Datasets", exploring architectural modifications and optimizations for large-scale training of SetQuence. Specifically, the optimizations were implemented with the [*alpha* partition of ZIH's HPC systems](https://doc.zih.tu-dresden.de/jobs_and_resources/alpha_centauri/) in mind; each of the 34 nodes in this partition consist of 8x NVIDIA A100 GPUs (40GB vRAM), 2 x AMD EPYC CPU 7352 and 1 TB RAM.
 
 ## What is SetQuence?
-SetQuence is a Deep Neural Network architecture to integrate sets of genomic sequences, via Language Modeling, to perform supervised tasks. For example, SetQuence is showcased in [our publication](https://ieeexplore.ieee.org/document/9863058/) for the goal of tumor type classification from patient mutomes.
+SetQuence is a Deep Neural Network architecture to integrate sets of genomic sequences, via Language Modeling, to perform supervised tasks. For example, SetQuence is showcased in [our publication](https://ieeexplore.ieee.org/document/9863058/) for the goal of tumor type classification from patient mutomes. We also introduced [SetOmic](https://github.com/danilexn/nebis) as a more general method covering other omic types (e.g., mRNA-seq expression profiles).
 
 ## 1. First steps
 SetQuence can be installed on Unix-based or Windows systems supporting Python >=3.6. Please, make sure this requirement is met. We recommend installing SetQuence in a python virtual environment with [Anaconda](https://docs.anaconda.com/anaconda/install/linux/).
